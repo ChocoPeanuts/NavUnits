@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -51,15 +51,13 @@ namespace NavUnits
                     // ToggleAirspeedDisplay signature: (bool? show, Vessel v) -> bool
                     MethodInfo toggleInfo = farApi.GetMethod("ToggleAirspeedDisplay", BindingFlags.Public | BindingFlags.Static);
                     if (toggleInfo != null)
-                    {
                         _toggleFarGui = (Func<bool?, Vessel, bool>)Delegate.CreateDelegate(typeof(Func<bool?, Vessel, bool>), toggleInfo);
-                    }
 
                     // If basic methods are found, consider FAR loaded
                     if (_fetchIas != null)
                     {
                         _isFarAvailable = true;
-                        Debug.Log("[NavUnits] FAR detected. API linked successfully.");
+                        NavUnits.SystemLog("FAR detected. API linked successfully.");
                     }
                     break;
                 }
@@ -89,7 +87,7 @@ namespace NavUnits
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"[NavUnits] Error toggling FAR display: {e.Message}");
+                    NavUnits.SystemErrorLog($"Error toggling FAR display: {e.Message}");
                 }
             }
         }
