@@ -514,22 +514,20 @@ namespace NavUnits
                     break;
                 case SpeedModeEx.Target:
                     rawSpeed = FlightGlobals.ship_tgtSpeed;
-                    if (currentTarget != null && rawSpeed > 0.001)
+                    if (currentTarget != null)
                     {
                         Vector3d shipVel = vessel.obt_velocity;
                         Vector3d tgtVel = currentTarget.GetObtVelocity();
                         Vector3d toTarget = currentTarget.GetTransform().position - vessel.GetTransform().position;
 
-                        _sb.Append(Vector3d.Dot(shipVel - tgtVel, toTarget) > 0 ? '-' : '+');
+                        if (Vector3d.Dot(shipVel - tgtVel, toTarget) > 0) rawSpeed *= -1;
                     }
                     break;
             }
 
             // 2. Validate Mach Unit (Prevent Mach in Orbit/Vacuum)
             if (ActiveUnit == SpeedUnit.Mach && (ActiveSpeedMode == SpeedModeEx.Orbit || ActiveSpeedMode == SpeedModeEx.Target || ActiveSpeedMode == SpeedModeEx.Vertical))
-            {
                 ActiveUnit = GetPreferredUnit();
-            }
 
             // 3. Prepare Display Data
             double displayValue;
@@ -556,6 +554,8 @@ namespace NavUnits
             digits = Mathf.Clamp(digits, 0, FloatFormats.Length - 1);
             double factor = Pow10[digits];
             displayValue = System.Math.Truncate(displayValue * factor) / factor;
+
+            if (displayValue >= 0 && (ActiveSpeedMode == SpeedModeEx.Vertical || ActiveSpeedMode == SpeedModeEx.Target)) _sb.Append('+');
 
             _sb.Append(displayValue.ToString(FloatFormats[digits], CultureInfo.InvariantCulture));
             _sb.Append(symbol);
@@ -888,4 +888,5 @@ namespace NavUnits
             return false;
         }
     }
+
 }
