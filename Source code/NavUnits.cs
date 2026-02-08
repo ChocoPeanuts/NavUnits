@@ -403,13 +403,17 @@ namespace NavUnits
                 if (_previousTarget == null && currentTarget != null)
                 {
                     // Speed Display Switch
-                    bool isSpeedoAuto = (_settingsGeneral != null && _settingsGeneral.autoSpeedMode != AutoSpeedMode.Off);
-                    if (isSpeedoAuto) SetSpeedMode(SpeedModeEx.Target);
-
-                    // NavBall Switch (Sync OFF only)
-                    if (!CachedNavBallSync && CachedNavBallAutoSwitch)
+                    if (_previousTarget == null && currentTarget != null)
                     {
-                        SetNavBallMode(SpeedDisplayModes.Target);
+                        // Speed Display Switch
+                        if (_settingsGeneral != null && _settingsGeneral.autoSpeedMode != AutoSpeedMode.Off)
+                            SetSpeedMode(SpeedModeEx.Target);
+                    
+                        // NavBall Switch
+                        if (CachedNavBallSync)
+                            ApplyKspModeSync(ActiveSpeedMode);
+                        else if (CachedNavBallAutoSwitch)
+                            SetNavBallMode(SpeedDisplayModes.Target);
                     }
                 }
                 // 2. Target Lost
@@ -890,3 +894,4 @@ namespace NavUnits
     }
 
 }
+
