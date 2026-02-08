@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using KSP.Localization;
 
 namespace NavUnits
@@ -55,10 +55,10 @@ namespace NavUnits
         public int autoSwitchThreshold { get; set; } = 100;
 
         [GameParameters.CustomParameterUI("#NU_Param_NavBallSync", toolTip = "#NU_Param_NavBallSync_ToolTip")]
-        public bool navBallSync = true;
+        public bool navBallSync { get; set; } = true;
 
         [GameParameters.CustomParameterUI("#NU_Param_NavBallAutoSwitch", toolTip = "#NU_Param_NavBallAutoSwitch_ToolTip")]
-        public bool navBallAutoSwitch = true;
+        public bool navBallAutoSwitch { get; set; } = true;
 
         public override bool Interactible(MemberInfo member, GameParameters parameters)
         {
@@ -70,6 +70,12 @@ namespace NavUnits
 
             return true;
         }
+
+        [GameParameters.CustomStringParameterUI("", autoPersistance = true, lines = 1, toolTip = "")]
+        public string uSpacer { get { return ""; } set { } }
+
+        [GameParameters.CustomParameterUI("#NU_Set_DebugMode", toolTip = "#NU_Set_DebugMode_T")]
+        public bool debugMode { get; set; } = false;
     }
 
     // ==========================================================
