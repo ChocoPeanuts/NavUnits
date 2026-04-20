@@ -276,7 +276,7 @@ namespace NavUnits
             if (target != null)
             {
                 // Force Target mode if Sync or Auto is enabled
-                if (CachedNavBallSync || CachedNavBallAutoSwitch)
+                if (!CachedNavBallSync || CachedNavBallAutoSwitch)
                     ActiveNavBallMode = SpeedDisplayModes.Target;
             }
             else
